@@ -1,5 +1,7 @@
 package com.demo.model;
 
+import com.demo.entity.Role;
+
 public class UserDTO {
     private Long id;
     private String username;
@@ -7,6 +9,7 @@ public class UserDTO {
     private String email;
     private String phone;
     private String address;
+    private Role role;
 
     public Long getId() {
         return id;
@@ -43,7 +46,6 @@ public class UserDTO {
     public String getPhone() {
         return phone;
     }
-
     public void setPhone(String phone) {
         this.phone = phone;
     }
@@ -54,5 +56,13 @@ public class UserDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

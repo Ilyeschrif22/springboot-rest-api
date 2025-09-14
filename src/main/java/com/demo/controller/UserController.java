@@ -1,16 +1,12 @@
 package com.demo.controller;
 
 import com.demo.entity.User;
-import com.demo.model.UserDTO;
 import com.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @RestController
 
@@ -29,6 +25,17 @@ public class UserController {
         return userRepository.findAll();
     }
 
+    @GetMapping("/users/id/{id}")
+    User getUser(@PathVariable Long id) {
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    @GetMapping("/users/email/{email}")
+    User getUserByEmail(@PathVariable String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+
     @PutMapping("/users/{id}")
     public User replaceUser(@RequestBody User newUser, @PathVariable Long id) {
         return userRepository.findById(id)
@@ -38,17 +45,21 @@ public class UserController {
                     if (newUser.getEmail() != null) user.setEmail(newUser.getEmail());
                     if (newUser.getAddress() != null) user.setAddress(newUser.getAddress());
                     if (newUser.getPhone() != null) user.setPhone(newUser.getPhone());
+                    if(newUser.getRole() != null) user.setRole(newUser.getRole());
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new RuntimeException("User not found with id " + id));
     }
-
 
     @DeleteMapping("/users/{id}")
     void deleteUserById(@PathVariable Long id) {
         userRepository.deleteById(id);
     }
 
+    @DeleteMapping("/users/all")
+    void deleteAllUsers() {
+        userRepository.deleteAll();
+    }
 
 
 
